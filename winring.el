@@ -1,14 +1,14 @@
 ;;; winring.el --- Window configuration rings
 
-;; Copyright (C) 1998-2008 Free Software Foundation, Inc.
+;; Copyright (C) 1998-2010 Free Software Foundation, Inc.
 
-;; Author:   1997-2008 Barry A. Warsaw
+;; Author:   1997-2010 Barry A. Warsaw
 ;; Contact:  gnu@wooz.org (Barry A. Warsaw)
-;; Homepage: http://barry.warsaw.us/elisp
+;; Homepage: http://launchpad.net/winring
 ;; Created:  March 1997
 ;; Keywords: frames tools
 
-(defconst winring-version "4.0"
+(defconst winring-version "4.0.1"
   "winring version number.")
 
 ;; This file is part of GNU Emacs.
