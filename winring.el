@@ -4,7 +4,7 @@
 
 ;; Author:   1997-2015 Barry A. Warsaw
 ;; Contact:  barry@python.org (Barry A. Warsaw)
-;; Homepage: http://launchpad.net/winring
+;; Homepage: https://gitlab.com/warsaw/winring
 ;; Created:  March 1997
 ;; Keywords: frames tools
 
@@ -70,8 +70,7 @@
 ;;               new configuration's name.
 ;;
 ;;    C-x 7 2 -- Create a duplicate of the current window
-;;               configuration.  C-u has the same semantics as with
-;;               "C-x 7 c".
+;;               configuration.
 ;;
 ;;    C-x 7 j -- Jump to a named configuration (prompts for the name).
 ;;
