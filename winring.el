@@ -1,14 +1,14 @@
 ;;; winring.el --- Window configuration rings
 
-;; Copyright (C) 1998-2018 Barry Warsaw
+;; Copyright (C) 1997-2024 Barry Warsaw
 
-;; Author:   1997-2018 Barry A. Warsaw
-;; Contact:  barry@python.org (Barry A. Warsaw)
+;; Author:   1997-2024 Barry Warsaw
+;; Contact:  barry@python.org (Barry Warsaw)
 ;; Homepage: https://gitlab.com/warsaw/winring
 ;; Created:  March 1997
 ;; Keywords: frames tools
 
-(defconst winring-version "5.1"
+(defconst winring-version "5.2"
   "The winring version number.")
 
 ;; winring.el is free software: you can redistribute it and/or modify it under
@@ -447,7 +447,7 @@ With \\[universal-argument] ARG prompt for named configuration to delete."
 (defun winring-rename-configuration ()
   "Rename the current configuration to NAME."
   (interactive)
-  (winring-set-name (winring-read-name "New window configuration name? ")))
+  (winring-set-name (winring-read-name "Rename window configuration to? ")))
 
 
 
