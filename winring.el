@@ -390,7 +390,7 @@ Otherwise, the function in `winring-name-generator' will be called to
 get the new configuration's name."
   (interactive "P")
   (let ((name (and (or arg winring-prompt-on-create)
-                   (winring-read-name "New window configuration name? "))))
+                   (winring-read-name "Duplicate window configuration name? "))))
     ;; Empty string is not allowed
     (if (string-equal name "")
         (setq name (funcall winring-name-generator)))
