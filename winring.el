@@ -1,14 +1,14 @@
 ;;; winring.el --- Window configuration rings
 
-;; Copyright (C) 1997-2024 Barry Warsaw
+;; Copyright (C) 1997-2025 Barry Warsaw
 
-;; Author:   1997-2024 Barry Warsaw
+;; Author:   1997-2025 Barry Warsaw
 ;; Contact:  barry@python.org (Barry Warsaw)
 ;; Homepage: https://gitlab.com/warsaw/winring
 ;; Created:  March 1997
 ;; Keywords: frames tools
 
-(defconst winring-version "5.2"
+(defconst winring-version "6.0"
   "The winring version number.")
 
 ;; winring.el is free software: you can redistribute it and/or modify it under
@@ -51,9 +51,13 @@
 ;; To use, make sure this file is on your `load-path' and put the following in
 ;; your .emacs file:
 ;;
-;; (require 'winring)
-;; (winring-initialize)
+;; (use-package winring)
 ;;
+;; (defun my-desktop-after-read-hook ()
+;;  "Initialize winring here, after all the frames have been created."
+;;  (winring-initialize))
+;; (add-hook 'desktop-after-read-hook 'my-desktop-after-read-hook)
+
 ;; Note that by default, this binds the winring keymap to the C-x 7 prefix,
 ;; but you can change this by setting the value of `winring-keymap-prefix',
 ;; before you call `winring-initialize'.
@@ -112,8 +116,7 @@
 ;; saving configurations on all visible frames, but it didn't work too well,
 ;; and I like frame independent rings better.
 ;;
-;; Version 5.0 has been ported to Emacs 24.4, but support for XEmacs and older
-;; Emacsen has been dropped.
+;; Version 5.0 was ported to Emacs 24.4, but support for XEmacs and older Emacsen has been dropped.
 ;;
 ;; I know of a few other related packages:
 ;;
@@ -256,7 +259,9 @@ If you change this, you must do it before calling `winring-initialize'.")
    Desktop save modes can save frame parameters, but the
    winring-ring parameter if saved will contain bogus data."
   (dolist (frame (frame-list))
-    (winring-set-frame-ring frame (winring-new-ring))
+    ;; Clear both the ring and name to prevent saving invalid data.
+    (set-frame-parameter frame 'winring-ring nil)
+    (set-frame-parameter frame 'winring-name nil)
     ))
 
 (defun winring-set-name (&optional name frame)
@@ -451,49 +456,11 @@ With \\[universal-argument] ARG prompt for named configuration to delete."
 
 
 
-(defconst winring-help-address "barry@python.org"
-  "Address accepting bug report submissions.")
-
 (defun winring-version ()
   "Echo the current version of winring in the minibuffer."
   (interactive)
   (message "Using winring version %s" winring-version)
-  ;;(setq zmacs-region-stays t)
   )
-
-(defun winring-submit-bug-report (comment-p)
-  "Submit via mail a bug report on winring.
-With \\[universal-argument] COMMENT-P just send any type of comment."
-  (interactive
-   (list (not (y-or-n-p
-               "Is this a bug report (hit `n' to send other comments)? "))))
-  (let ((reporter-prompt-for-summary-p (if comment-p
-                                           "(Very) brief summary: "
-                                         t)))
-    (require 'reporter)
-    (reporter-submit-bug-report
-     winring-help-address                ;address
-     (concat "winring " winring-version) ;pkgname
-     ;; varlist
-     (if comment-p nil
-       '(winring-ring-size
-         winring-new-config-buffer-name
-         winring-show-names
-         winring-name-generator
-         winring-keymap-prefix))
-     nil                                ;pre-hooks
-     nil                                ;post-hooks
-     "Dear Barry,")                     ;salutation
-    (if comment-p nil
-      (set-mark (point))
-      (insert
-"Please replace this text with a description of your problem.\n\
-The more accurately and succinctly you can describe the\n\
-problem you are encountering, the more likely I can fix it\n\
-in a timely way.\n\n")
-      (exchange-point-and-mark)
-      )))
-
 
 
 ;; Initialization.
@@ -502,7 +469,9 @@ in a timely way.\n\n")
   "Create the variable to hold the window configuration name.
 
   Use HACK-MODELINE-FUNCTION to override the default behavior."
-  (set-frame-parameter nil 'winring-name nil)
+  (dolist (frame (frame-list))
+    (winring-set-name frame)
+    (set-frame-parameter frame 'winring-ring nil))
   ;; Glom the configuration name into the mode-line.  I've experimented with a
   ;; couple of different locations, including mode-line-frame-identification.
   ;; Sticking it on the very left side of the modeline, even before
