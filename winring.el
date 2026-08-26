@@ -1,4 +1,4 @@
-;;; winring.el --- Window configuration rings
+;;; winring.el --- Window configuration rings  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1997-2025 Barry Warsaw
 
